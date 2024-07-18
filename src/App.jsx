@@ -28,7 +28,7 @@ function App() {
         </a>
       </div>
 
-      <p>V0.0.0</p>
+      <p>V0.0.1</p>
 
       <form
         className="row"
