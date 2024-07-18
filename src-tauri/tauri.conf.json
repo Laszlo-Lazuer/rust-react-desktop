@@ -30,7 +30,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://gist.github.com/Laszlo-Lazuer/d692fe74c651c06deb9e5bb8013811c2"
+        "https://cdn.crabnebula.app/update/squirrels/laszlo-app/{{target}}-{{arch}}/{{current_version}}"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDM1NjRDQ0FDRTA4OThERTAKUldUZ2pZbmdyTXhrTllYSGRXTjJqaDNPZ3RhQTBWN3B3dVdoRmtSU3grVWN4Q1pvZHhlRjFzelkK"
