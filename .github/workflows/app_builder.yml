@@ -1,4 +1,5 @@
 name: App Builder
+
 on:
   push:
     tags:
@@ -55,13 +56,28 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: yarn install # change this to npm or pnpm depending on which one you use.
 
+      - name: Download SQLite3 (Windows only)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          curl -LO https://www.sqlite.org/2023/sqlite-dll-win64-x64-3400100.zip
+          unzip sqlite-dll-win64-x64-3400100.zip -d sqlite3
+          curl -LO https://www.sqlite.org/2023/sqlite-tools-win32-x86-3400100.zip
+          unzip sqlite-tools-win32-x86-3400100.zip -d sqlite3
+
+      - name: Set up environment variables (Windows only)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          echo "CGO_LDFLAGS=-L${{ github.workspace }}\\sqlite3" >> $GITHUB_ENV
+          echo "CGO_CFLAGS=-I${{ github.workspace }}\\sqlite3" >> $GITHUB_ENV
+          echo "${{ github.workspace }}\\sqlite3" >> $GITHUB_PATH
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
-          # tauri-action replaces \_\_VERSION\_\_ with the app version
+          # tauri-action replaces __VERSION__ with the app version
           tagName: ${{ github.ref_name }}
           releaseName: "Laszlos-app v__VERSION__"
           releaseBody: |
