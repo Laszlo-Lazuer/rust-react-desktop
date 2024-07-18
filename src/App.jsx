@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import UpdateChecker from './components/UpdateChecker';
+import ImageEditor from './components/ImageEditor';
 import "./App.css";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  // const [greetMsg, setGreetMsg] = useState("");
+  // const [name, setName] = useState("");
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  // async function greet() {
+  //   // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
+  //   setGreetMsg(await invoke("greet", { name }));
+  // }
 
   return (
     <div className="container">
-      <h1>Welcome to your Watch List!</h1>
+      <p>V1.0.9</p>
 
-      <p>V1.0.8</p>
-
-      <form
+      {/* <form
         className="row"
         onSubmit={(e) => {
           e.preventDefault();
@@ -31,10 +30,11 @@ function App() {
           placeholder="Enter a name..."
         />
         <button type="submit">Greet</button>
-        <UpdateChecker />
-      </form>
 
-      <p>{greetMsg}</p>
+      </form> */}
+      <UpdateChecker />
+      {/* <p>{greetMsg}</p> */}
+      <ImageEditor />
     </div>
   );
 }
