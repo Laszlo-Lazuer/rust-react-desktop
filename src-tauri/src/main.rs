@@ -21,19 +21,20 @@ fn get_todos() -> Vec<Todo> {
 }
 
 #[tauri::command]
-fn add_todo(todo: Todo) {
-    DB.add_todo(todo).unwrap();
+fn add_todo(text: String) {
+    DB.add_todo(text).unwrap();
 }
 
 #[tauri::command]
 fn toggle_todo_completion(id: String) {
-    DB.toggle_todo_completion(&id).unwrap();
+    DB.toggle_todo_completion(&id).unwrap()
 }
 
 #[tauri::command]
 fn delete_todo(id: String) {
-    DB.delete_todo(&id).unwrap();
+    DB.delete_todo(&id).unwrap()
 }
+
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]

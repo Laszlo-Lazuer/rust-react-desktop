@@ -1,7 +1,7 @@
-// src-tauri/src/db.rs
 use rusqlite::{params, Connection, Result};
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
+use uuid::Uuid;
 
 #[derive(Serialize, Deserialize)]
 pub struct Todo {
@@ -47,11 +47,12 @@ impl Database {
         Ok(todos)
     }
 
-    pub fn add_todo(&self, todo: Todo) -> Result<()> {
+    pub fn add_todo(&self, text: String) -> Result<()> {
         let conn = self.conn.lock().unwrap();
+        let id = Uuid::new_v4().to_string();
         conn.execute(
             "INSERT INTO todos (id, text, completed) VALUES (?1, ?2, ?3)",
-            params![todo.id, todo.text, todo.completed],
+            params![id, text, false],
         )?;
         Ok(())
     }
