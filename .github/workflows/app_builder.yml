@@ -1,4 +1,4 @@
-name: App Builder
+name: 'publish'
 
 on:
   push:
@@ -13,35 +13,39 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        platform: [macos-latest, ubuntu-latest, windows-latest]
         include:
-          - platform: 'macos-latest' # for Arm based macs (M1 and above).
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # for Intel based macs.
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
-            args: ''
-          - platform: 'windows-latest'
-            args: ''
+          - os: ubuntu-latest
+            rust_target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            rust_target: x86_64-apple-darwin
+          - os: macos-latest
+            rust_target: aarch64-apple-darwin
+          - os: windows-latest
+            rust_target: x86_64-pc-windows-msvc
 
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04'
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
+        # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm'
+          cache: 'npm' # Set this to npm, npm or pnpm.
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: Rust cache
@@ -50,55 +54,16 @@ jobs:
           workspaces: './src-tauri -> target'
 
       - name: install frontend dependencies
-        run: yarn install # change this to npm or pnpm depending on which one you use.
+        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+        run: npm install # change this to npm or pnpm depending on which one you use.
 
-      - name: Download SQLite3 (Windows only)
-        if: matrix.platform == 'windows-latest'
-        run: |
-          curl -LO https://www.sqlite.org/2023/sqlite-dll-win64-x64-3400100.zip
-          unzip -q sqlite-dll-win64-x64-3400100.zip -d sqlite3 || echo "Failed to unzip sqlite-dll-win64-x64-3400100.zip"
-          curl -LO https://www.sqlite.org/2023/sqlite-tools-win32-x86-3400100.zip
-          unzip -q sqlite-tools-win32-x86-3400100.zip -d sqlite3 || echo "Failed to unzip sqlite-tools-win32-x86-3400100.zip"
-
-      - name: Verify SQLite3 Download (Windows only)
-        if: matrix.platform == 'windows-latest'
-        run: |
-          if [ ! -f "sqlite3/sqlite3.dll" ]; then
-            echo "sqlite3.dll not found. Download failed."
-            exit 1
-          fi
-          if [ ! -f "sqlite3/sqlite3.exe" ]; then
-            echo "sqlite3.exe not found. Download failed."
-            exit 1
-          fi
-
-      - name: Set up environment variables (Windows only)
-        if: matrix.platform == 'windows-latest'
-        run: |
-          echo "CGO_LDFLAGS=-L${{ github.workspace }}\\sqlite3" >> $GITHUB_ENV
-          echo "CGO_CFLAGS=-I${{ github.workspace }}\\sqlite3" >> $GITHUB_ENV
-          echo "${{ github.workspace }}\\sqlite3" >> $GITHUB_PATH
-
-      - name: Build Tauri app
-        run: yarn tauri build # or the appropriate build command for your setup
-
-      - name: Create or update release
-        id: create_release
-        uses: softprops/action-gh-release@v1
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
-          name: "Laszlos-app v${{ github.ref_name }}"
-          draft: true
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: 'Laszlos-app v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./src-tauri/target/release/bundle/macos/*.dmg # Change the path based on your build output
-          asset_name: "rust-react-desktop_${{ github.ref_name }}.dmg"
-          asset_content_type: application/octet-stream
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          args: ${{ matrix.args }}
