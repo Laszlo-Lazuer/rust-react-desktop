@@ -15,25 +15,9 @@ function App() {
 
   return (
     <div className="container">
-      <p>V1.0.9</p>
+      <p>V1.0.10</p>
 
-      {/* <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-
-      </form> */}
       <UpdateChecker />
-      {/* <p>{greetMsg}</p> */}
       <ImageEditor />
     </div>
   );

@@ -7,12 +7,6 @@ use std::io::{Cursor, Write};
 use std::path::Path;
 
 // Commands
-
-#[tauri::command]
-async fn greet(name: String) -> String {
-    format!("Hello, {}!", name)
-}
-
 #[tauri::command]
 async fn load_image(file_path: String) -> Result<Vec<u8>, String> {
     let img = image::open(&file_path).map_err(|e| e.to_string())?;
@@ -102,7 +96,6 @@ async fn apply_contrast(image_data: Vec<u8>, value: f32) -> Result<Vec<u8>, Stri
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            greet,
             load_image,
             save_image,
             apply_grayscale,

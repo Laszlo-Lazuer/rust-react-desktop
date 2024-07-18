@@ -4,6 +4,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 
 const ImageEditor = () => {
   const [image, setImage] = useState(null);
+  const [history, setHistory] = useState([]);
   const imgRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -13,7 +14,9 @@ const ImageEditor = () => {
     });
     if (selected) {
       const imageData = await invoke('load_image', { filePath: selected });
-      setImage(URL.createObjectURL(new Blob([new Uint8Array(imageData)])));
+      const imageUrl = URL.createObjectURL(new Blob([new Uint8Array(imageData)]));
+      setImage(imageUrl);
+      setHistory([imageUrl]);  // Initialize history with the loaded image
     }
   };
 
@@ -36,8 +39,21 @@ const ImageEditor = () => {
       const response = await fetch(image);
       const imageData = new Uint8Array(await response.arrayBuffer());
       const filteredImageData = await invoke(filter, { imageData: Array.from(imageData), ...args });
-      setImage(URL.createObjectURL(new Blob([new Uint8Array(filteredImageData)])));
+      const filteredImageUrl = URL.createObjectURL(new Blob([new Uint8Array(filteredImageData)]));
+      setImage(filteredImageUrl);
+      setHistory((prevHistory) => [...prevHistory, filteredImageUrl]);  // Add new state to history
     }
+  };
+
+  const undo = () => {
+    setHistory((prevHistory) => {
+      if (prevHistory.length > 1) {
+        const newHistory = prevHistory.slice(0, -1);
+        setImage(newHistory[newHistory.length - 1]);
+        return newHistory;
+      }
+      return prevHistory;
+    });
   };
 
   const onLoad = useCallback((img) => {
@@ -56,6 +72,7 @@ const ImageEditor = () => {
       <button onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</button>
       <button onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</button>
       <button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</button>
+      <button onClick={undo} disabled={history.length <= 1}>Undo</button>
       {image && <img ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
       <canvas
         ref={canvasRef}
