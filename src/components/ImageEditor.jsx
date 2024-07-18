@@ -1,10 +1,11 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api/tauri';
 
 const ImageEditor = () => {
   const [image, setImage] = useState(null);
   const [history, setHistory] = useState([]);
+  const [progress, setProgress] = useState(0); // Progress state
   const imgRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -36,12 +37,23 @@ const ImageEditor = () => {
 
   const applyFilter = async (filter, args = {}) => {
     if (image) {
-      const response = await fetch(image);
-      const imageData = new Uint8Array(await response.arrayBuffer());
-      const filteredImageData = await invoke(filter, { imageData: Array.from(imageData), ...args });
-      const filteredImageUrl = URL.createObjectURL(new Blob([new Uint8Array(filteredImageData)]));
-      setImage(filteredImageUrl);
-      setHistory((prevHistory) => [...prevHistory, filteredImageUrl]);  // Add new state to history
+      setProgress(0); // Reset progress
+      const intervalId = setInterval(() => {
+        setProgress((prev) => Math.min(prev + 10, 90)); // Increment progress
+      }, 100);
+
+      try {
+        const response = await fetch(image);
+        const imageData = new Uint8Array(await response.arrayBuffer());
+        const filteredImageData = await invoke(filter, { imageData: Array.from(imageData), ...args });
+        const filteredImageUrl = URL.createObjectURL(new Blob([new Uint8Array(filteredImageData)]));
+        setImage(filteredImageUrl);
+        setHistory((prevHistory) => [...prevHistory, filteredImageUrl]);  // Add new state to history
+      } finally {
+        clearInterval(intervalId);
+        setProgress(100); // Set progress to 100%
+        setTimeout(() => setProgress(0), 500); // Reset progress after a delay
+      }
     }
   };
 
@@ -54,6 +66,33 @@ const ImageEditor = () => {
       }
       return prevHistory;
     });
+  };
+
+  const compressAndExport = async () => {
+    if (image) {
+      setProgress(0); // Reset progress
+      const intervalId = setInterval(() => {
+        setProgress((prev) => Math.min(prev + 10, 90)); // Increment progress
+      }, 100);
+
+      try {
+        const response = await fetch(image);
+        const imageData = new Uint8Array(await response.arrayBuffer());
+        const compressedImageData = await invoke('compress_to_webp', { imageData: Array.from(imageData), quality: 75.0 });
+        const blob = new Blob([new Uint8Array(compressedImageData)], { type: 'image/webp' });
+        const filePath = await save({ defaultPath: 'compressed-image.webp' });
+        if (filePath) {
+          const arrayBuffer = await blob.arrayBuffer();
+          const data = new Uint8Array(arrayBuffer);
+          await invoke('save_image', { filePath, imageData: Array.from(data) });
+          alert('Image saved as WebP successfully!');
+        }
+      } finally {
+        clearInterval(intervalId);
+        setProgress(100); // Set progress to 100%
+        setTimeout(() => setProgress(0), 500); // Reset progress after a delay
+      }
+    }
   };
 
   const onLoad = useCallback((img) => {
@@ -73,6 +112,12 @@ const ImageEditor = () => {
       <button onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</button>
       <button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</button>
       <button onClick={undo} disabled={history.length <= 1}>Undo</button>
+      <button onClick={compressAndExport}>Compress and Export as WebP</button>
+      <div className="progress-bar">
+        <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
+          {progress}%
+        </div>
+      </div>
       {image && <img ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
       <canvas
         ref={canvasRef}

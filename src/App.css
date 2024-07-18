@@ -114,3 +114,21 @@ button {
     background-color: #0f0f0f69;
   }
 }
+
+/* Add this to your CSS file or in a <style> tag in your component */
+.progress-bar {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 30px;
+  width: 0;
+  background-color: #3498db;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+  border-radius: 25px;
+}
