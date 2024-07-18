@@ -16,7 +16,7 @@ function App() {
     <div className="container">
       <h1>Welcome to your Watch List!</h1>
 
-      <p>V1.0.7</p>
+      <p>V1.0.8</p>
 
       <form
         className="row"
