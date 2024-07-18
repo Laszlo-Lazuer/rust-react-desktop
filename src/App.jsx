@@ -1,6 +1,7 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import { invoke } from "@tauri-apps/api/tauri";
+import UpdateChecker from './components/UpdateChecker';
 import "./App.css";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           placeholder="Enter a name..."
         />
         <button type="submit">Greet</button>
+        <UpdateChecker />
       </form>
 
       <p>{greetMsg}</p>
