@@ -2,6 +2,10 @@
   filter: drop-shadow(0 0 2em #747bff);
 }
 
+body {
+  margin: 0;
+}
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafb);
 }
@@ -174,5 +178,20 @@ button {
 
   button {
     margin: .25em;
+  }
+}
+
+.section-update {
+  display: flex;
+  flex-direction: column-reverse;
+  text-align: right;
+  margin: .25em;
+  width: 17em;
+  margin-left: auto;
+
+
+
+  button {
+    align-self: end;
   }
 }
