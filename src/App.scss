@@ -2,6 +2,10 @@
   filter: drop-shadow(0 0 2em #747bff);
 }
 
+body {
+  margin: 0;
+}
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafb);
 }
@@ -23,7 +27,6 @@
 
 .container {
   margin: 0;
-  padding-top: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,6 +61,8 @@ a:hover {
 
 h1 {
   text-align: center;
+  margin-top: 0;
+  margin-bottom: .25em;
 }
 
 input,
@@ -71,7 +76,7 @@ button {
   color: #0f0f0f;
   background-color: #ffffff;
   transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-6);;
 }
 
 button {
@@ -121,6 +126,12 @@ button {
   background-color: #f3f3f3;
   border-radius: 25px;
   overflow: hidden;
+  position: absolute;
+  width: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
 }
 
 .progress-bar-fill {
@@ -131,4 +142,62 @@ button {
   line-height: 30px;
   color: white;
   border-radius: 25px;
+}
+
+.image-wrapper {
+  margin: 0 auto;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  // width: 90%;
+  position: relative;
+}
+
+.active-image {
+  max-width: 90%;
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  z-index: -1;
+  
+}
+
+.image-buttons {
+  margin-bottom: 1em;
+  & button {
+    margin: .25em;
+  }
+
+}
+
+.filters {
+  max-width: 740px;
+  margin: 0 auto;
+  margin-bottom: .25em;
+
+  button {
+    margin: .25em;
+  }
+}
+
+.section-update {
+  display: flex;
+  flex-direction: column-reverse;
+  text-align: right;
+  margin: .5em;
+  width: 15em;
+  margin-left: auto;
+
+  p {
+    margin: 0;
+    text-align: center;;
+  }
+
+
+
+  button {
+    align-self: end;
+  }
 }

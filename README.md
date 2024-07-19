@@ -7,3 +7,16 @@
 ## Features
 - The Image editor allows you to open an image from your file system, apply a filter and save the new file.
 - Version Updating working
+
+
+## App Signing
+- For the purposes of this project the app is unsinged.
+
+### MacOS
+- To run the app open the DMG -> Copy the app to your Applications folder then run the following:
+```xattr -rc /Applications/rust-react-desktop.app && codesign --force --deep --sign - /Applications/rust-react-desktop.app```
+  - This will allow you to run the unsigned app.
+
+### Windows
+- The app will run when opening the `msi` build, you might see an alert regarding an unknown developer.
+

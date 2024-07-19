@@ -1,6 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api/tauri';
+import { Button } from '@radix-ui/themes';
+import { ResetIcon } from '@radix-ui/react-icons';
+
 
 const ImageEditor = () => {
   const [image, setImage] = useState(null);
@@ -11,7 +14,7 @@ const ImageEditor = () => {
 
   const loadImage = async () => {
     const selected = await open({
-      filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }],
+      filters: [{ name: 'Images', extensions: ['jpg', 'png'] }],
     });
     if (selected) {
       const imageData = await invoke('load_image', { filePath: selected });
@@ -102,29 +105,40 @@ const ImageEditor = () => {
   return (
     <div>
       <h1>Image Editor</h1>
-      <button onClick={loadImage}>Load Image</button>
-      <button onClick={saveImage}>Save Image</button>
-      <button onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</button>
-      <button onClick={() => applyFilter('apply_invert')}>Apply Invert</button>
-      <button onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</button>
-      <button onClick={() => applyFilter('apply_brighten', { value: 30 })}>Apply Brighten</button>
-      <button onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</button>
-      <button onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</button>
-      <button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</button>
-      <button onClick={undo} disabled={history.length <= 1}>Undo</button>
-      <button onClick={compressAndExport}>Compress and Export as WebP</button>
-      <div className="progress-bar">
-        <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
-          {progress}%
-        </div>
+
+      <div className='image-buttons'>
+        <Button onClick={loadImage}>Load Image</Button>
+        <Button onClick={saveImage}>Save Image</Button>
       </div>
-      {image && <img ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
-      <canvas
-        ref={canvasRef}
-        style={{
-          display: 'none',
-        }}
-      />
+      <div className='filters'>
+        <Button disabled={!image} onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_invert')}>Apply Invert</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_brighten', { value: 30 })}>Apply Brighten</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</Button>
+        <Button disabled={!image} onClick={compressAndExport}>Compress and Export as WebP</Button>
+      </div>
+      <div style={{maxWidth: '90%'}}>
+        {image && <Button style={{ top: 0, float: 'right', margin: '.25em', marginRight: 0}} onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>}
+      </div>
+      <div className='image-wrapper'>
+        <div className="progress-bar">
+          { (progress>0) && <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
+            {progress}%
+          </div>
+          }
+        </div>
+        {image && <img style={(progress>0)?{opacity:0.5}:{opacity:1.0}} className="active-image" ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
+        </div>
+
+        <canvas
+          ref={canvasRef}
+          style={{
+            display: 'none',
+          }}
+        />
     </div>
   );
 };
