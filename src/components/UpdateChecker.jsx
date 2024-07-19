@@ -37,7 +37,7 @@ const UpdateChecker = () => {
   return (
     <div >
       <div className='section-update' style={{display: 'flex', justifyContent: 'right'}}>      <p>{updateMessage}</p>
-      <Button style={{width:'17em'}} variant="solid" onClick={handleCheckForUpdates}>Check for Updates (v1.0.11)<SymbolIcon /></Button></div>
+      <Button style={{width:'17em'}} variant="solid" onClick={handleCheckForUpdates}>Check for Updates (v1.0.12)<SymbolIcon /></Button></div>
 
       {updateAvailable && <Button variant="solid" onClick={handleInstallUpdate}>Install Update<SymbolIcon /></Button>}
     </div>
