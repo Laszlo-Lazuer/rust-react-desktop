@@ -14,7 +14,7 @@ const ImageEditor = () => {
 
   const loadImage = async () => {
     const selected = await open({
-      filters: [{ name: 'Images', extensions: ['jpg', 'png', 'gif'] }],
+      filters: [{ name: 'Images', extensions: ['jpg', 'png'] }],
     });
     if (selected) {
       const imageData = await invoke('load_image', { filePath: selected });
@@ -120,8 +120,10 @@ const ImageEditor = () => {
         <Button disabled={!image} onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</Button>
         <Button disabled={!image} onClick={compressAndExport}>Compress and Export as WebP</Button>
       </div>
+      <div style={{maxWidth: '90%'}}>
+        {image && <Button style={{ top: 0, float: 'right', margin: '.25em', marginRight: 0}} onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>}
+      </div>
       <div className='image-wrapper'>
-        {image && <Button style={{position: 'absolute', top: 0, right: '6em'}} onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>}
         <div className="progress-bar">
           { (progress>0) && <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
             {progress}%
