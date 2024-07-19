@@ -36,7 +36,8 @@ const UpdateChecker = () => {
 
   return (
     <div>
-      <Button variant="solid" onClick={handleCheckForUpdates}>Check for Updates<SymbolIcon /></Button>
+      <div style={{display: 'flex', justifyContent: 'right'}}><Button variant="solid" onClick={handleCheckForUpdates}>Check for Updates (v1.0.10)<SymbolIcon /></Button></div>
+
       <p>{updateMessage}</p>
       {updateAvailable && <Button variant="solid" onClick={handleInstallUpdate}>Install Update<SymbolIcon /></Button>}
     </div>

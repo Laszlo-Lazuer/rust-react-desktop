@@ -1,6 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api/tauri';
+import { Button } from '@radix-ui/themes';
+import { ResetIcon } from '@radix-ui/react-icons';
+
 
 const ImageEditor = () => {
   const [image, setImage] = useState(null);
@@ -102,17 +105,22 @@ const ImageEditor = () => {
   return (
     <div>
       <h1>Image Editor</h1>
-      <button onClick={loadImage}>Load Image</button>
-      <button onClick={saveImage}>Save Image</button>
-      <button onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</button>
-      <button onClick={() => applyFilter('apply_invert')}>Apply Invert</button>
-      <button onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</button>
-      <button onClick={() => applyFilter('apply_brighten', { value: 30 })}>Apply Brighten</button>
-      <button onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</button>
-      <button onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</button>
-      <button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</button>
-      <button onClick={undo} disabled={history.length <= 1}>Undo</button>
-      <button onClick={compressAndExport}>Compress and Export as WebP</button>
+
+      <div>
+      <Button onClick={loadImage}>Load Image</Button>
+      <Button onClick={saveImage}>Save Image</Button>
+      </div>
+      <div>
+        <Button onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</Button>
+        <Button onClick={() => applyFilter('apply_invert')}>Apply Invert</Button>
+        <Button onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</Button>
+        <Button onClick={() => applyFilter('apply_brighten', { value: 30 })}>Apply Brighten</Button>
+        <Button onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</Button>
+        <Button onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</Button>
+        <Button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</Button>
+        <Button onClick={compressAndExport}>Compress and Export as WebP</Button>
+      </div>
+      <Button onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>
       <div className='image-wrapper'>
         <div className="progress-bar">
           { (progress>0) && <div className="progress-bar-fill" style={{ width: `${progress}%` }}>

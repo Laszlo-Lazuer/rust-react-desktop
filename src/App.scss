@@ -23,7 +23,6 @@
 
 .container {
   margin: 0;
-  padding-top: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,6 +57,7 @@ a:hover {
 
 h1 {
   text-align: center;
+  margin-top: 0;
 }
 
 input,
@@ -141,13 +141,19 @@ button {
 
 .image-wrapper {
   margin: 0 auto;
-  width: 90%;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // width: 90%;
   position: relative;
 }
 
 .active-image {
-  max-width: 100%;
+  max-width: 90%;
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   z-index: -1;
 }
+

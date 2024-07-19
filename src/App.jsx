@@ -8,7 +8,6 @@ function App() {
 
   return (
     <div className="container">
-      <p>V1.0.10</p>
       <UpdateChecker />
       <ImageEditor />
     </div>
