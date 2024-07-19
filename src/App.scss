@@ -120,7 +120,7 @@ button {
   }
 }
 
-/* Add this to your CSS file or in a <style> tag in your component */
+// Image Processing bar
 .progress-bar {
   width: 100%;
   background-color: #f3f3f3;
@@ -152,7 +152,6 @@ button {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  // width: 90%;
   position: relative;
 }
 
@@ -161,7 +160,7 @@ button {
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   z-index: -1;
-  
+
 }
 
 .image-buttons {
@@ -194,8 +193,6 @@ button {
     margin: 0;
     text-align: center;;
   }
-
-
 
   button {
     align-self: end;

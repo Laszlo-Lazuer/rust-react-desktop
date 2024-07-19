@@ -1,3 +1,4 @@
+// This file allows the user to manually check for updates
 import React, { useState } from 'react';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater';
 import { relaunch } from '@tauri-apps/api/process';
@@ -38,7 +39,6 @@ const UpdateChecker = () => {
     <div >
       <div className='section-update' style={{display: 'flex', justifyContent: 'right'}}>      <p>{updateMessage}</p>
       <Button style={{width:'17em'}} variant="solid" onClick={handleCheckForUpdates}>Check for Updates (v1.0.12)<SymbolIcon /></Button></div>
-
       {updateAvailable && <Button variant="solid" onClick={handleInstallUpdate}>Install Update<SymbolIcon /></Button>}
     </div>
   );

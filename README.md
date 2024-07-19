@@ -16,7 +16,7 @@
 - For the purposes of this project the app is unsinged.
 
 ### MacOS
-- To run the app open the DMG -> Copy the app to your Applications folder then run the following:
+- To run the app open the DMG -> Copy the app to your Applications folder then run the following in your terminal:
 ```xattr -rc /Applications/rust-react-desktop.app && codesign --force --deep --sign - /Applications/rust-react-desktop.app```
   - This will allow you to run the unsigned app.
 

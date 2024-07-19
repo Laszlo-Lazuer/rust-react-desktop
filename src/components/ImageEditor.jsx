@@ -1,3 +1,5 @@
+// React component to connect the Frontend to the Backend
+// Enabling the use of the Image processing files defined in main.rs
 import React, { useState, useRef, useCallback } from 'react';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api/tauri';

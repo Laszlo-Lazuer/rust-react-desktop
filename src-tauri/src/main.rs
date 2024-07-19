@@ -7,6 +7,8 @@ use std::io::{Cursor, Write};
 use std::path::Path;
 use webp::Encoder;
 
+
+// Leveraged the Image crate to handle image processing on the backend
 #[tauri::command]
 async fn load_image(file_path: String) -> Result<Vec<u8>, String> {
     let img = image::open(&file_path).map_err(|e| e.to_string())?;
