@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { checkUpdate, installUpdate } from '@tauri-apps/api/updater';
 import { relaunch } from '@tauri-apps/api/process';
+import { Button } from '@radix-ui/themes';
+import { SymbolIcon } from '@radix-ui/react-icons';
 
 const UpdateChecker = () => {
   const [updateAvailable, setUpdateAvailable] = useState(false);
@@ -34,9 +36,9 @@ const UpdateChecker = () => {
 
   return (
     <div>
-      <button onClick={handleCheckForUpdates}>Check for Updates</button>
+      <Button variant="solid" onClick={handleCheckForUpdates}>Check for Updates<SymbolIcon /></Button>
       <p>{updateMessage}</p>
-      {updateAvailable && <button onClick={handleInstallUpdate}>Install Update</button>}
+      {updateAvailable && <Button variant="solid" onClick={handleInstallUpdate}>Install Update<SymbolIcon /></Button>}
     </div>
   );
 };

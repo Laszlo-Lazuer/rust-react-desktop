@@ -113,18 +113,22 @@ const ImageEditor = () => {
       <button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</button>
       <button onClick={undo} disabled={history.length <= 1}>Undo</button>
       <button onClick={compressAndExport}>Compress and Export as WebP</button>
-      <div className="progress-bar">
-        <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
-          {progress}%
+      <div className='image-wrapper'>
+        <div className="progress-bar">
+          { (progress>0) && <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
+            {progress}%
+          </div>
+          }
         </div>
-      </div>
-      {image && <img className="active-image" ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
-      <canvas
-        ref={canvasRef}
-        style={{
-          display: 'none',
-        }}
-      />
+        {image && <img style={(progress>0)?{opacity:0.5}:{opacity:1.0}} className="active-image" ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
+        </div>
+
+        <canvas
+          ref={canvasRef}
+          style={{
+            display: 'none',
+          }}
+        />
     </div>
   );
 };

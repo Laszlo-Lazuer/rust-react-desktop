@@ -9,9 +9,6 @@ function App() {
   return (
     <div className="container">
       <p>V1.0.10</p>
-      <Flex direction="column" gap="2">
-      <Button>Test</Button>
-      </Flex>
       <UpdateChecker />
       <ImageEditor />
     </div>
