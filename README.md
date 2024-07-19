@@ -2,6 +2,18 @@
 - Pulling data from [gist](https://gist.github.com/Laszlo-Lazuer/d692fe74c651c06deb9e5bb8013811c2)
 - Verified we can update we just need to include the file signature metadata in the gist.
 
+# How to run the project
+- Requirements:
+  - Rust installed
+  - Node installed
+Clone the repo
+- nun `npm ci`
+- cd into src-tauri
+  - run `cargo build` in your terminal
+- At project root run `npm run tauri build` to make sure everything is working. You will see the executable pop up if it is.
+- Run `npm run tauri dev` to go into dev mode with hot reloading.
+  - FYI when in dev mode you can right click in the app to pull up the web inspector.
+
 ## Summary
 After Exploring a couple of different ways to build a `self-updating` app with the recommended languages. I settled on Tauri as it would allow me to leverage my experience with React. I attempted to use Wails with Go, though the self-updating feature exceeded how much time I allocated for discovery. I found `Tauri` to be a fairly fun framework to work with and I will consider using it in future projects.
 
