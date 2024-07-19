@@ -185,9 +185,14 @@ button {
   display: flex;
   flex-direction: column-reverse;
   text-align: right;
-  margin: .25em;
-  width: 17em;
+  margin: .5em;
+  width: 15em;
   margin-left: auto;
+
+  p {
+    margin: 0;
+    text-align: center;;
+  }
 
 
 
