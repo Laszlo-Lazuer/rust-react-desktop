@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use image::{DynamicImage, GenericImageView, ImageOutputFormat};
+use image::{GenericImageView, ImageOutputFormat};
 use std::fs::File;
 use std::io::{Cursor, Write};
 use std::path::Path;
