@@ -106,11 +106,11 @@ const ImageEditor = () => {
     <div>
       <h1>Image Editor</h1>
 
-      <div>
-      <Button onClick={loadImage}>Load Image</Button>
-      <Button onClick={saveImage}>Save Image</Button>
+      <div className='image-buttons'>
+        <Button onClick={loadImage}>Load Image</Button>
+        <Button onClick={saveImage}>Save Image</Button>
       </div>
-      <div>
+      <div className='filters'>
         <Button onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</Button>
         <Button onClick={() => applyFilter('apply_invert')}>Apply Invert</Button>
         <Button onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</Button>
@@ -120,7 +120,7 @@ const ImageEditor = () => {
         <Button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</Button>
         <Button onClick={compressAndExport}>Compress and Export as WebP</Button>
       </div>
-      <Button onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>
+      <Button style={{marginBottom: '2em'}} onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>
       <div className='image-wrapper'>
         <div className="progress-bar">
           { (progress>0) && <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
