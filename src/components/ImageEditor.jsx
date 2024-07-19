@@ -111,17 +111,17 @@ const ImageEditor = () => {
         <Button onClick={saveImage}>Save Image</Button>
       </div>
       <div className='filters'>
-        <Button onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</Button>
-        <Button onClick={() => applyFilter('apply_invert')}>Apply Invert</Button>
-        <Button onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</Button>
-        <Button onClick={() => applyFilter('apply_brighten', { value: 30 })}>Apply Brighten</Button>
-        <Button onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</Button>
-        <Button onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</Button>
-        <Button onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</Button>
-        <Button onClick={compressAndExport}>Compress and Export as WebP</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_grayscale')}>Apply Grayscale</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_invert')}>Apply Invert</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_blur', { sigma: 2 })}>Apply Blur</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_brighten', { value: 30 })}>Apply Brighten</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_contrast', { value: 1.5 })}>Apply Contrast</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_resize', { width: 200, height: 200 })}>Resize to 200x200</Button>
+        <Button disabled={!image} onClick={() => applyFilter('apply_rotate', { degrees: 90 })}>Rotate 90°</Button>
+        <Button disabled={!image} onClick={compressAndExport}>Compress and Export as WebP</Button>
       </div>
-      <Button style={{marginBottom: '2em'}} onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>
       <div className='image-wrapper'>
+        {image && <Button style={{position: 'absolute', top: 0, right: '6em'}} onClick={undo} disabled={history.length <= 1}>Undo<ResetIcon /></Button>}
         <div className="progress-bar">
           { (progress>0) && <div className="progress-bar-fill" style={{ width: `${progress}%` }}>
             {progress}%
