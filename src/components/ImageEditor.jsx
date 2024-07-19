@@ -118,7 +118,7 @@ const ImageEditor = () => {
           {progress}%
         </div>
       </div>
-      {image && <img ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
+      {image && <img className="active-image" ref={imgRef} src={image} alt="Loaded" onLoad={() => onLoad(imgRef.current)} />}
       <canvas
         ref={canvasRef}
         style={{
