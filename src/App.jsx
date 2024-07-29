@@ -7,8 +7,9 @@ function App() {
 
   return (
     <div className="container">
-      <UpdateChecker />
-      <ImageEditor />
+      {/* <UpdateChecker /> */}
+      <p>Deprecated</p>
+      {/* <ImageEditor /> */}
     </div>
   );
 }
